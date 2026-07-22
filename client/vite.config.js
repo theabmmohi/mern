@@ -6,7 +6,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": new URL("./src", import.meta.url).pathname,
-      "@asset": new URL("./src/assets", import.meta.url).pathname
+      "@asset": new URL("./src/assets", import.meta.url).pathname,
+      "@page": new URL("./src/assets/pages", import.meta.url).pathname
     }
   }
 })
