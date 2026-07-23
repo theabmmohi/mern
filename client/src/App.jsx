@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { ThemeProvider, CssBaseline, Stack, AppBar, Divider } from "@mui/material"
+import { ThemeProvider, CssBaseline, Stack, AppBar, Divider, Snackbar, Slide } from "@mui/material"
 import { StrictMode, useEffect, useState, createContext } from "react"
 import { BrowserRouter } from "react-router-dom"
 import { createRoot } from "react-dom/client"
@@ -13,6 +13,7 @@ import Nav from "@asset/Nav"
 export const AppContext = createContext(null)
 
 function App() {
+  //  App Theme
   const [theme, setTheme] = useState(() => localStorage.getItem("AppTheme") || "system")
   const [systemPrefersDark, setSystemPrefersDark] = useState(() => window.matchMedia("(prefers-color-scheme: dark)").matches)
   useEffect(() => {
@@ -30,8 +31,33 @@ function App() {
     localStorage.setItem("AppTheme", newTheme)
     setTheme(newTheme)
   }
+  //  App Toast
+  const [, setSnackQueue] = useState([])
+  const [currentSnack, setCurrentSnack] = useState(undefined)
+  const [open, setOpen] = useState(false)
+  const toast = (message) => {
+    const item = { message, key: Date.now() }
+    if (currentSnack) setSnackQueue((prev) => [...prev, item])
+    else {
+      setCurrentSnack(item)
+      setOpen(true)
+    }
+  }
+  const handleSnackExited = () => {
+    setSnackQueue((prev) => {
+      if (prev.length) {
+        setCurrentSnack(prev[0])
+        setOpen(true)
+        return prev.slice(1)
+      }
+      setCurrentSnack(undefined)
+      return prev
+    })
+  }
+  const handleSnackClose = () => setOpen(false)
+  //  App Return
   return(
-    <AppContext.Provider value={{ applyTheme }}>
+    <AppContext.Provider value={{ applyTheme, toast }}>
       <ThemeProvider theme={isDark ? themeD : themeL}>
         <CssBaseline/>
         <BrowserRouter>
@@ -48,6 +74,7 @@ function App() {
               <Nav/>
             </AppBar>
           </Stack>
+          <Snackbar key={currentSnack?.key} open={open} onClose={handleSnackClose} message={currentSnack?.message} autoHideDuration={currentSnack ? Math.max(2500, currentSnack.message.length * 100) : 2500} slots={{ transition: Slide }} slotProps={{ transition: { onExited: handleSnackExited } }} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}/>
         </BrowserRouter>
       </ThemeProvider>
     </AppContext.Provider>
