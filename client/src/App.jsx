@@ -1,10 +1,16 @@
 /* eslint-disable react-refresh/only-export-components */
-import { ThemeProvider, CssBaseline } from "@mui/material"
-import { StrictMode, useEffect, useState } from "react"
+import { ThemeProvider, CssBaseline, Stack, AppBar, Divider } from "@mui/material"
+import { StrictMode, useEffect, useState, createContext } from "react"
+import { BrowserRouter } from "react-router-dom"
 import { createRoot } from "react-dom/client"
 import "@/App.css"
 
 import { themeL, themeD } from "@/Theme"
+import Topbar from "@asset/Topbar"
+import Router from "@asset/Router"
+import Nav from "@asset/Nav"
+
+export const AppContext = createContext(null)
 
 function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem("AppTheme") || "system")
@@ -25,9 +31,26 @@ function App() {
     setTheme(newTheme)
   }
   return(
-    <ThemeProvider theme={isDark ? themeD : themeL}>
-      <CssBaseline/>
-    </ThemeProvider>
+    <AppContext.Provider value={{ applyTheme }}>
+      <ThemeProvider theme={isDark ? themeD : themeL}>
+        <CssBaseline/>
+        <BrowserRouter>
+          <Stack sx={{ height: "100svh", width: "100svw" }}>
+            <AppBar position="sticky" elevation={0} color="default">
+              <Topbar/>
+            </AppBar>
+            <Divider/>
+            <Stack sx={{ overflowY: "auto", flex: 1 }}>
+              <Router/>
+            </Stack>
+            <Divider/>
+            <AppBar position="sticky" elevation={0} color="default">
+              <Nav/>
+            </AppBar>
+          </Stack>
+        </BrowserRouter>
+      </ThemeProvider>
+    </AppContext.Provider>
   )
 }
 

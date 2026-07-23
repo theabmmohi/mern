@@ -30,14 +30,14 @@ export const themeL = createTheme({
   palette: {
     mode: "light",
     primary: { main: family[700] },
-    secondary: { main: family[300] },
+    secondary: { main: family[400] },
     text: {
       primary: colors.grey[900],
       secondary: colors.grey[600]
     },
     background: {
-      default: "#ffffff",
-      paper: colors.grey[50]
+      default: family[50],
+      paper: colors.common.white
     }
   }
 })
@@ -46,11 +46,11 @@ export const themeD = createTheme({
   ...base,
   palette: {
     mode: "dark",
-    primary: { main: family[300] },
-    secondary: { main: family[100] },
+    primary: { main: colors.common.white },
+    secondary: { main: colors.grey[500] },
     text: {
       primary: colors.common.white,
-      secondary: colors.grey[400]
+      secondary: colors.grey[500]
     },
     background: {
       default: colors.grey[900],
