@@ -10,11 +10,11 @@ export default function Router() {
   return(
     <Suspense fallback={<p>Loading...</p>}>
       <Routes>
-        <Route path="/" element={<Navigate to="/home" replace/>}/>
-        <Route path="/home"    element={<Home   />}/>
-        <Route path="/results" element={<Results/>}/>
-        <Route path="/matches" element={<Matches/>}/>
-        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/*" element={<Navigate to="/home" replace/>}/>
+        <Route path="/home/*"    element={<Home   />}/>
+        <Route path="/results/*" element={<Results/>}/>
+        <Route path="/matches/*" element={<Matches/>}/>
+        <Route path="/profile/*" element={<Profile/>}/>
       </Routes>
     </Suspense>
   )
