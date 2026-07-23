@@ -66,7 +66,7 @@ function App() {
               <Topbar/>
             </AppBar>
             <Divider/>
-            <Stack sx={{ overflowY: "auto", flex: 1 }}>
+            <Stack sx={{ overflowY: "auto", width: "100%", flex: 1, gap: 5, p: 5 }}>
               <Router/>
             </Stack>
             <Divider/>

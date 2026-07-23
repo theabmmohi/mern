@@ -3,7 +3,7 @@ import { Toolbar } from "@mui/material"
 export default function Topbar() {
   return(
     <Toolbar>
-      Topbar
+      {import.meta.env.VITE_APP_NAME}
     </Toolbar>
   )
 }

@@ -1,3 +1,5 @@
 export default function Results() {
-  return "Results"
+  return(<>
+    Results
+  </>)
 }

@@ -7,6 +7,7 @@ const base = {
   shape: { borderRadius: 12 },
   components: {
     MuiButton: {
+      defaultProps: { disableElevation: true },
       styleOverrides: {
         root: {
           textTransform: "none",
