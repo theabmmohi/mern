@@ -13,16 +13,17 @@ const userSchema = new mongoose.Schema({
     lowercase: true, trim: true
   },
   password: {
-    required: true,
-    select: false,
-    type: String
+    type: String, required: true, select: false,
+    validate: {
+      validator: (v) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(v),
+      message: "Password must be at least 8 characters and include uppercase, lowercase, and number.",
+    }
   }
 }, { timestamps: true })
 
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next()
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return
   this.password = await bcrypt.hash(this.password, 12)
-  next()
 })
 
 userSchema.methods.comparePassword = function (candidatePassword) {

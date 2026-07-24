@@ -1,15 +1,21 @@
-import dotenvExpand from "dotenv-expand"
+import mongoSanitize from "express-mongo-sanitize"
 import cookieParser from "cookie-parser"
+import dotenvExpand from "dotenv-expand"
 import mongoose from "mongoose"
 import express from "express"
 import dotenv from "dotenv"
+import helmet from "helmet"
+import morgan from "morgan"
 import cors from "cors"
 
 dotenvExpand.expand(dotenv.config({ path: "../.env", quiet: true }))
 const server = express()
 const port = 8000
-server.use(cors({ origin: "", credentials: true }))
+server.use(helmet())
+server.use(morgan(process.env.NODE_ENV === "prod" ? "combined" : "dev"))
+server.use(cors({ origin: process.env.APP_CLIENT, credentials: true }))
 server.use(express.json())
+server.use(mongoSanitize())
 server.use(cookieParser())
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => {

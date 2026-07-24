@@ -10,6 +10,10 @@ const refreshTokenSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true, ref: "User"
   },
+  used: {
+    type: Boolean,
+    default: false
+  },
   expiresAt: {
     index: { expires: 0 },
     required: true,

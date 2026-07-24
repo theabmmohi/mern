@@ -1,16 +1,18 @@
 import jwt from "jsonwebtoken"
 import crypto from "crypto"
 
-const ACCESS_SECRET = process.env.JWT_SECRET
 const ACCESS_EXPIRY = "15m"
 const REFRESH_EXPIRY_DAYS = 30
 
 export function signAccessToken(userId) {
-  return jwt.sign({ sub: userId.toString() }, ACCESS_SECRET, { expiresIn: ACCESS_EXPIRY })
+  return jwt.sign({ sub: userId.toString() }, process.env.JWT_SECRET, {
+    expiresIn: ACCESS_EXPIRY,
+    algorithm: "HS256"
+  })
 }
 
 export function verifyAccessToken(token) {
-  return jwt.verify(token, ACCESS_SECRET)
+  return jwt.verify(token, process.env.JWT_SECRET, { algorithm: "HS256" })
 }
 
 export function generateRefreshToken() {

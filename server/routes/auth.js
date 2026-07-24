@@ -1,3 +1,4 @@
+import rateLimit from "express-rate-limit"
 import express from "express"
 const router = express.Router()
 
@@ -6,6 +7,17 @@ import RefreshToken from "#model/refreshToken"
 import createRes from "#util/createRes"
 import User from "#model/user"
 
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { success: false, message: "Too many attempts, try again later." },
+})
+const registerLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  message: { success: false, message: "Too many attempts, try again later." },
+})
+
 const isProd = process.env.NODE_ENV === "prod"
 const REFRESH_COOKIE_OPTIONS = {
   httpOnly: true, secure: isProd,
@@ -13,7 +25,7 @@ const REFRESH_COOKIE_OPTIONS = {
   ...(isProd && process.env.APP_DOMAIN ? { domain: process.env.APP_DOMAIN } : {})
 }
 
-router.post("/register", async (req, res) => {
+router.post("/register", registerLimiter, async (req, res) => {
   try {
     const { username, email, password } = req.body
     if (!username) return res.json(createRes(false, "Username required."))
@@ -33,8 +45,7 @@ router.post("/register", async (req, res) => {
     res.json(createRes(true, "User registered.", { accessToken, user: { id: user._id, username: user.username, email: user.email } }))
   } catch (error) {res.json(createRes(false, error?.message ?? "Server error."))}
 })
-
-router.post("/login", async (req, res) => {
+router.post("/login", loginLimiter, async (req, res) => {
   try {
     const { identifier, password } = req.body
     if (!identifier) return res.json(createRes(false, "Username or email required."))
@@ -48,7 +59,6 @@ router.post("/login", async (req, res) => {
     res.json(createRes(true, "Logged in.", { accessToken, user: { id: user._id, username: user.username, email: user.email } }))
   } catch (error) {res.json(createRes(false, error?.message ?? "Server error."))}
 })
-
 router.post("/refresh", async (req, res) => {
   try {
     const incomingRefreshToken = req.cookies?.refreshToken
@@ -59,7 +69,13 @@ router.post("/refresh", async (req, res) => {
       res.clearCookie("refreshToken", REFRESH_COOKIE_OPTIONS)
       return res.json(createRes(false, "Session expired."))
     }
-    await existing.deleteOne()
+    if (existing.used) {
+      await RefreshToken.deleteMany({ userId: existing.userId })
+      res.clearCookie("refreshToken", REFRESH_COOKIE_OPTIONS)
+      return res.json(createRes(false, "Security alert: all sessions revoked. Please log in again."))
+    }
+    existing.used = true
+    await existing.save()
     const accessToken = signAccessToken(existing.userId)
     const { raw: newRefreshToken, expiresAt } = generateRefreshToken()
     await RefreshToken.create({ tokenHash: hashToken(newRefreshToken), userId: existing.userId, expiresAt })
@@ -67,7 +83,6 @@ router.post("/refresh", async (req, res) => {
     res.json(createRes(true, "Token refreshed.", { accessToken }))
   } catch (error) {res.json(createRes(false, error?.message ?? "Server error."))}
 })
-
 router.post("/logout", async (req, res) => {
   try {
     const incomingRefreshToken = req.cookies?.refreshToken
