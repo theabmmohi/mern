@@ -3,7 +3,7 @@ import { LuWallet, LuLogIn } from "react-icons/lu"
 
 
 
-const user = null
+const user = { balance: 14895.85 }
 
 
 
@@ -14,9 +14,9 @@ export default function Topbar() {
         {import.meta.env.VITE_APP_NAME}
       </span>
       {user ? (<>
-        <Chip label={<Stack sx={{ flexDirection: "row", alignItems: "center", gap: 1 }}>
+        <Chip label={<Stack sx={{ flexDirection: "row", alignItems: "center", gap: 0.5 }}>
           <LuWallet size="1.125rem"/>
-          <span>{user?.balance?.toLocaleString(import.meta.env.VITE_APP_LOCALE, {
+          <span>{user?.balance?.toLocaleString("bn-BD-u-nu-latn", {
             style: "currency",
             currency: import.meta.env.VITE_APP_CURRENCY,
             minimumFractionDigits: 0,
