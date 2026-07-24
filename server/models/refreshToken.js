@@ -18,7 +18,9 @@ const refreshTokenSchema = new mongoose.Schema({
     index: { expires: 0 },
     required: true,
     type: Date
-  }
+  },
+  userAgent: { type: String },
+  ipAddress: { type: String }
 }, { timestamps: true })
 
 export default mongoose.model("RefreshToken", refreshTokenSchema)
