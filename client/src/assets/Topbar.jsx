@@ -1,13 +1,15 @@
 import { Toolbar, Chip, Stack, Avatar, Button } from "@mui/material"
 import { LuWallet, LuLogIn } from "react-icons/lu"
+import { useNavigate } from "react-router-dom"
 
 
 
-const user = { balance: 14895.85 }
+const user = null
 
 
 
 export default function Topbar() {
+  const navigate = useNavigate()
   return(
     <Toolbar sx={{ gap: 2.5 }}>
       <span style={{ flex: 1 }}>
@@ -25,7 +27,7 @@ export default function Topbar() {
         </Stack>}/>
         <Avatar/>
       </>) : (<>
-        <Button variant="contained" startIcon={<LuLogIn/>}>Log in</Button>
+        <Button variant="contained" onClick={() => navigate("/auth")} startIcon={<LuLogIn/>}>Log in</Button>
       </>)}
     </Toolbar>
   )

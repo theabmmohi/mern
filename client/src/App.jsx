@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom"
 import { createRoot } from "react-dom/client"
 import "@/App.css"
 
+import { getAccessToken, setAccessToken, api } from "@/Api"
 import { themeL, themeD } from "@/Theme"
 import Topbar from "@asset/Topbar"
 import Router from "@asset/Router"
@@ -57,7 +58,7 @@ function App() {
   const handleSnackClose = () => setOpen(false)
   //  App Return
   return(
-    <AppContext.Provider value={{ applyTheme, toast }}>
+    <AppContext.Provider value={{ applyTheme, toast, getAccessToken, setAccessToken, api }}>
       <ThemeProvider theme={isDark ? themeD : themeL}>
         <CssBaseline/>
         <BrowserRouter>
