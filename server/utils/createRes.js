@@ -1,4 +1,4 @@
-export default function createRes(success, message, data = null) {¬
+export default function createRes(success, message, data = null) {
   const response = {
     success: Boolean(success),
     message: String(message)

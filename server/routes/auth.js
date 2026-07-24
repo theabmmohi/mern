@@ -1,10 +1,10 @@
 import express from "express"
 const router = express.Router()
 
-import { signAccessToken, generateRefreshToken, hashToken } from "../utils/token.js"
-import RefreshToken from "../models/RefreshToken.js"
-import createRes from "../utils/createRes.js"
-import User from "../models/User.js"
+import { signAccessToken, generateRefreshToken, hashToken } from "#util/tokens"
+import RefreshToken from "#model/refreshToken"
+import createRes from "#util/createRes"
+import User from "#model/user"
 
 const isProd = process.env.NODE_ENV === "prod"
 const REFRESH_COOKIE_OPTIONS = {

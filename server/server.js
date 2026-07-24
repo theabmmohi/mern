@@ -22,5 +22,6 @@ mongoose.connect(process.env.MONGODB_URI)
 })
 server.all("/", (_, res) => res.type("text").send("Im Alive!"))
 
-import auth from "./routes/auth.js"
+import auth from "#route/auth"
 server.use("/auth", auth)
+
