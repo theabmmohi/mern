@@ -15,7 +15,7 @@ server.use(express.json())
 server.use(mongoSanitize())
 server.use(cookieParser())
 
-mongoose.connect("process.env.MONGODB_URI")
+mongoose.connect(process.env.MONGODB_URI)
 .then(() => {
   console.log("Database connected.")
   server.listen(port, () => console.log(`Server started on port ${port}.`))
