@@ -1,6 +1,15 @@
-export const toRoutes = (path) => path.slice(1).split("-").map(seg => seg.charAt(0).toUpperCase() + seg.slice(1)).join("")
 import { LuHouse, LuUser } from "react-icons/lu"
+import { lazy } from "react"
+
 export const tabs = [
-  { path: "/home", icon: LuHouse },
-  { path: "/user", icon: LuUser  }
+  {
+    path: "/home",
+    icon: LuHouse,
+    Page: lazy(() => import("@page/Home"))
+  },
+  {
+    path: "/user",
+    icon: LuUser,
+    Page: lazy(() => import("@page/User"))
+  }
 ]

@@ -2,7 +2,7 @@ import { Toolbar, Chip, Stack, Avatar, Button, Skeleton } from "@mui/material"
 import { LuWallet, LuLogIn } from "react-icons/lu"
 import { useNavigate } from "react-router-dom"
 import { useContext } from "react"
-import { Context } from "@/App"
+import  Context from "@js/Context"
 
 export default function Topbar() {
   const navigate = useNavigate()
