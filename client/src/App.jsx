@@ -1,17 +1,14 @@
 import { ThemeProvider, CssBaseline, Stack, AppBar, Divider, Snackbar, Slide } from "@mui/material"
-import { StrictMode, createContext, useState, useEffect } from "react"
 import { BrowserRouter } from "react-router-dom"
-import { createRoot } from "react-dom/client"
-import "@/App.css"
+import { useState, useEffect } from "react"
+import Context from "@js/Context"
 
-import { ThemeL, ThemeD } from "@/Theme"
+import { ThemeL, ThemeD } from "@js/Theme"
 import Topbar from "@asset/Topbar"
 import Router from "@asset/Router"
 import Nav from "@asset/Nav"
 
-export const Context = createContext()
-
-function App () {
+export default function App () {
   // ============================== Theme
   const [theme, setTheme] = useState(() => localStorage.getItem("AppTheme") || "system")
   const [systemPrefersDark, setSystemPrefersDark] = useState(() => window.matchMedia("(prefers-color-scheme: dark)").matches)
@@ -81,5 +78,3 @@ function App () {
     </ThemeProvider>
   </Context.Provider>
 }
-
-createRoot(document.getElementById("client")).render(<StrictMode><App/></StrictMode>)

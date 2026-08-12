@@ -7,7 +7,7 @@ import morgan from "morgan"
 import cors from "cors"
 
 const server = express()
-const port = process.env.PORT
+const port = process.env.SERVER_PORT
 server.use(helmet())
 server.use(morgan(process.env.NODE_ENV === "dev" ? "dev" : "combined"))
 server.use(cors({ origin: process.env.APP_CLIENT, credentials: true }))

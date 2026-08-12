@@ -1,13 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { Tabs, Tab } from "@mui/material"
-import { LuHouse } from "react-icons/lu"
-
-const tabs = [
-  { path: "/home", icon: LuHouse }
-]
+import { tabs } from "@js/Tab"
 const tabPaths = tabs.map(t => t.path)
-
 export default function Nav() {
   const location = useLocation()
   const segment = "/" + location.pathname.split("/")[1]
